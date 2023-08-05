@@ -1,12 +1,15 @@
 import pygame
 import sys
+from pygame.sprite import Sprite
 
-class Sprite():
-    def __init__(self, current_game, image):
+class Agent(Sprite):
+    def __init__(self, current_game, image, width, height, sheet_width, sheet_height):
         self.current_game = current_game
         self.screen = current_game.screen
         self.sheet = image
-        self.sheet = pygame.transform.scale(self.sheet, (832*0.6, 1344*0.6))
+        self.sheet_width = sheet_width
+        self.sheet_height = sheet_height
+        self.sheet = pygame.transform.scale(self.sheet, (self.sheet_width*0.6, self.sheet_height*0.6))
         self.right = False
         self.left = False
         self.up = False
@@ -14,8 +17,10 @@ class Sprite():
         self.rect = self.sheet.get_rect()
         self.frame = 0 
         self.row = 11
-        self.width = 64*0.6
-        self.height = 64*0.6
+        self.width = width*0.6 # scale factor
+        self.height = height*0.6
+        self.sprite_rect = pygame.Rect(0,0,24,48)
+        self.rect.center = self.current_game.screen_rect.center
 
     def update_sprite(self):
         """Draw the sprite to the sceen and update"""
@@ -27,6 +32,9 @@ class Sprite():
         self._check_events()
         self._update_frame()
         self._update_position()
+        #self.sprite_rect.midtop = (self.rect.centerx+32, self.rect.centery+14)
+        #pygame.draw.rect(self.screen, (200,200,200), self.sprite_rect)
+
 
     def _update_frame(self):
         """Update the frame of the sprite"""
